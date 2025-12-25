@@ -53,11 +53,166 @@ let schoolName = localStorage.getItem("schoolName");
 let authorizationCode = localStorage.getItem("authorizationCode");
 let accessToken = localStorage.getItem("access_token");
 let userType = localStorage.getItem("userType");
+let selectedUser = "~me";
 let lastLessonEndMin;
 let day = 0;
 let topY = 125;
 const timeline = document.createElement("div");
 timeline.classList.add("timeline");
+
+// User selector wiring — uses static HTML in `index.html` (next to Dag/Week). If not present, a small fallback is created.
+(function setupUserSelector() {
+  function ensureDOM(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }
+  ensureDOM(() => {
+    let select = document.getElementById("selectedUserDropdown");
+
+    function getDocentenList() {
+      const raw = localStorage.getItem("docentenList");
+      if (!raw) {
+        const defaultList = ["~me"];
+        localStorage.setItem("docentenList", JSON.stringify(defaultList));
+        return defaultList;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+        if (typeof parsed === "string") return parsed.split(",").map((s) => s.trim()).filter(Boolean);
+      } catch (e) {
+        // fallback if stored as comma-separated string
+        return raw.split(",").map((s) => s.trim()).filter(Boolean);
+      }
+    }
+
+    function populateSelect(sel) {
+      // normalize, dedupe and sort alphabetically (case-insensitive)
+      const raw = getDocentenList();
+      const normalized = Array.from(new Set(raw.map((s) => String(s).trim()).filter(Boolean)));
+      normalized.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+      sel.innerHTML = "";
+      for (const item of normalized) {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.textContent = item;
+        sel.appendChild(opt);
+      }
+    }
+
+    if (!select) {
+      // fallback: create a small floating selector so the feature still works
+      const wrapper = document.createElement("div");
+      wrapper.id = "user-selector";
+      wrapper.style.cssText =
+        "position:fixed;top:8px;left:8px;z-index:9999;background:var(--primary-background);border-radius:6px;padding:6px 8px;box-shadow:0 1px 2px rgba(0,0,0,0.08);font-size:13px;display:flex;align-items:center;gap:8px;";
+      const label = document.createElement("span");
+      label.textContent = "User";
+      label.style.fontWeight = "600";
+      label.style.fontSize = "12px";
+      select = document.createElement("select");
+      select.id = "selectedUserDropdown";
+      wrapper.appendChild(label);
+      wrapper.appendChild(select);
+      document.body.appendChild(wrapper);
+    }
+
+    // populate options from docentenList
+    populateSelect(select);
+
+    // initialize from localStorage or existing global and ensure value is in the list
+    const stored = localStorage.getItem("selectedUser");
+    const list = getDocentenList();
+    if (stored && list.includes(stored)) {
+      selectedUser = stored;
+    }
+    if (selectedUser && list.includes(selectedUser)) {
+      select.value = selectedUser;
+    } else {
+      selectedUser = list[0] || "";
+      select.value = selectedUser;
+      localStorage.setItem("selectedUser", selectedUser);
+    }
+
+    select.addEventListener("change", (e) => {
+      selectedUser = e.target.value;
+      localStorage.setItem("selectedUser", selectedUser);
+      fetchSchedule(window.year, window.week);
+    });
+
+    // Add / manage docenten list UI handlers
+    const addInput = document.getElementById("addDocentInput");
+    const addBtn = document.getElementById("addDocentBtn");
+
+    function addDocent(value) {
+      const val = String(value || "").trim();
+      if (!val) return;
+      const list = getDocentenList();
+      if (list.includes(val)) {
+        // if already present, just select it
+        select.value = val;
+        selectedUser = val;
+        localStorage.setItem("selectedUser", selectedUser);
+        fetchSchedule(window.year, window.week);
+        return;
+      }
+      list.push(val);
+      // normalize, dedupe and sort before storing
+      const normalized = Array.from(new Set(list.map((s) => String(s).trim()).filter(Boolean)));
+      normalized.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+      localStorage.setItem("docentenList", JSON.stringify(normalized));
+      populateSelect(select);
+      select.value = val;
+      selectedUser = val;
+      localStorage.setItem("selectedUser", selectedUser);
+      if (addInput) addInput.value = "";
+      fetchSchedule(window.year, window.week);
+    }
+
+    if (addBtn) {
+      addBtn.addEventListener("click", () => addDocent(addInput?.value));
+    }
+    if (addInput) {
+      addInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          addDocent(addInput.value);
+        }
+      });
+    }
+
+    // Remove current selected docent
+    const removeBtn = document.getElementById("removeDocentBtn");
+    if (removeBtn) {
+      removeBtn.addEventListener("click", () => {
+        const val = select.value;
+        if (!val) return;
+        const confirmMsg = `Weet je zeker dat je ${val} wilt verwijderen?`;
+        if (!confirm(confirmMsg)) return;
+        let list = getDocentenList();
+        list = list.filter((x) => x !== val).map((s) => String(s).trim()).filter(Boolean);
+        // If list would become empty, restore default to keep UI functional
+        if (!list.length) {
+          list = ["~me"];
+        }
+        // normalize, dedupe and sort
+        list = Array.from(new Set(list));
+        list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+        localStorage.setItem("docentenList", JSON.stringify(list));
+        populateSelect(select);
+        // Set selection to the first item and persist
+        selectedUser = list[0] || "";
+        select.value = selectedUser;
+        localStorage.setItem("selectedUser", selectedUser);
+        if (addInput) addInput.value = "";
+        fetchSchedule(window.year, window.week);
+      });
+    }
+  });
+})();
+
 if (!schoolName && !accessToken) {
   show("welcomeScreen", "Zermelo koppelen", "hideBack");
   document
@@ -315,7 +470,7 @@ async function fetchSchedule(year, week, isFirstLoad) {
     return;
   }
   const response = await fetch(
-    `https://${schoolName}.zportal.nl/api/liveschedule?${userType}=~me&week=${year}${week}&fields`,
+    `https://${schoolName}.zportal.nl/api/liveschedule?${userType}=${selectedUser}&week=${year}${week}&fields`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,

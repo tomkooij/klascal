@@ -147,6 +147,13 @@
         <span data-translate="turn">Draaien</span>
       </button>
       <div style="margin-left: auto">
+        <span id="user-selector" style="display:inline-flex;align-items:center;gap:8px;margin-right:8px;">
+          <span class="user-label" style="font-weight:600;font-size:12px;margin-right:4px;">User</span>
+          <select id="selectedUserDropdown" style="min-width:72px;padding:4px 6px;"></select>
+          <input id="addDocentInput" type="text" placeholder="Toevoegen" style="padding:4px 6px;min-width:96px;border-radius:4px;border:1px solid rgba(0,0,0,0.08);" />
+          <button id="addDocentBtn" title="Voeg docent toe" style="padding:4px 8px;border-radius:4px;border:1px solid rgba(0,0,0,0.08);background:transparent;">+</button>
+          <button id="removeDocentBtn" title="Verwijder geselecteerde docent" style="padding:4px 8px;border-radius:4px;border:1px solid rgba(0,0,0,0.08);background:transparent;color:var(--danger, #c0392b);">−</button>
+        </span>
         <button
           class="btn"
           id="dayBtn"
