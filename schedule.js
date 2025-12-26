@@ -314,8 +314,15 @@ async function fetchSchedule(year, week, isFirstLoad) {
     fetchToken();
     return;
   }
+  const selectedTeacher = localStorage.getItem("selectedTeacher") || "~me";
+  let apiUserType = userType;
+  let apiUser = "~me";
+  if (selectedTeacher !== "~me") {
+    apiUserType = "teacher";
+    apiUser = selectedTeacher;
+  }
   const response = await fetch(
-    `https://${schoolName}.zportal.nl/api/liveschedule?${userType}=~me&week=${year}${week}&fields`,
+    `https://${schoolName}.zportal.nl/api/liveschedule?${apiUserType}=${apiUser}&week=${year}${week}&fields`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -932,3 +939,93 @@ async function showLessonInfo(lessonHTML, lesson) {
     );
   }
 }
+
+function loadTeachers() {
+  const select = document.getElementById("teacherSelect");
+  if (!select) return;
+
+  select.innerHTML = '';
+  
+  const meOption = document.createElement("option");
+  meOption.value = "~me";
+  meOption.text = "Ik";
+  select.appendChild(meOption);
+
+  const savedTeachers = JSON.parse(localStorage.getItem("savedTeachers") || "[]");
+  savedTeachers.forEach(teacher => {
+    const option = document.createElement("option");
+    option.value = teacher;
+    option.text = teacher; 
+    select.appendChild(option);
+  });
+
+  const addOption = document.createElement("option");
+  addOption.value = "add";
+  addOption.text = "+ Docent";
+  select.appendChild(addOption);
+
+  const selected = localStorage.getItem("selectedTeacher") || "~me";
+  if (savedTeachers.includes(selected) || selected === "~me") {
+    select.value = selected;
+  } else {
+    select.value = "~me";
+    localStorage.setItem("selectedTeacher", "~me");
+  }
+  
+  updateDeleteButtonVisibility();
+}
+
+function updateDeleteButtonVisibility() {
+    const select = document.getElementById("teacherSelect");
+    const deleteBtn = document.getElementById("deleteTeacherBtn");
+    if (select.value !== "~me" && select.value !== "add") {
+        deleteBtn.disabled = false;
+        deleteBtn.style.opacity = "1";
+        deleteBtn.style.cursor = "pointer";
+    } else {
+        deleteBtn.disabled = true;
+        deleteBtn.style.opacity = "0.5";
+        deleteBtn.style.cursor = "default";
+    }
+}
+
+function teacherSelectChange(select) {
+  if (select.value === "add") {
+    const teacherCode = prompt("Voer de afkorting van de docent in:");
+    if (teacherCode) {
+        const cleanCode = teacherCode.trim();
+        let savedTeachers = JSON.parse(localStorage.getItem("savedTeachers") || "[]");
+        if (!savedTeachers.includes(cleanCode)) {
+            savedTeachers.push(cleanCode);
+            savedTeachers.sort();
+            localStorage.setItem("savedTeachers", JSON.stringify(savedTeachers));
+        }
+        localStorage.setItem("selectedTeacher", cleanCode);
+        loadTeachers();
+        fetchSchedule(window.year, window.week);
+    } else {
+        select.value = localStorage.getItem("selectedTeacher") || "~me";
+    }
+  } else {
+    localStorage.setItem("selectedTeacher", select.value);
+    updateDeleteButtonVisibility();
+    fetchSchedule(window.year, window.week);
+  }
+}
+
+function deleteTeacher() {
+    const select = document.getElementById("teacherSelect");
+    const teacherToRemove = select.value;
+    if (teacherToRemove === "~me" || teacherToRemove === "add") return;
+    
+    if (confirm(`Weet je zeker dat je ${teacherToRemove} wilt verwijderen?`)) {
+        let savedTeachers = JSON.parse(localStorage.getItem("savedTeachers") || "[]");
+        savedTeachers = savedTeachers.filter(t => t !== teacherToRemove);
+        localStorage.setItem("savedTeachers", JSON.stringify(savedTeachers));
+        localStorage.setItem("selectedTeacher", "~me");
+        loadTeachers();
+        fetchSchedule(window.year, window.week);
+    }
+}
+
+loadTeachers();
