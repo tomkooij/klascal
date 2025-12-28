@@ -61,12 +61,10 @@
 }
 #field {
   background: var(--primary-background);
-  position: fixed;
-  width: calc(100vw - 16px);
+  position: sticky;
   top: 0;
-  left: 0;
   padding: 4px 8px;
-  z-index: 1;
+  z-index: 10;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -302,7 +300,6 @@ details strong {
 }
 
 #schedule {
-  margin-top: 2.75rem;
   transition: transform ease-in-out 0.1s;
   will-change: transform;
 }
@@ -316,12 +313,10 @@ details strong {
   gap: 12px;
 }
 #schedule.listEnabled {
-  margin-top: 3.3125rem;
 }
 #schedule.ltrEnabled {
   flex-direction: column;
   gap: 0;
-  margin-top: 2.5rem;
 }
 .ltrEnabled strong.date {
   margin: 12px;
@@ -976,5 +971,31 @@ dialog.right #content {
   #previousDay,
   #nextDay {
     display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  #teacherSelect {
+    max-width: 70px !important;
+    font-size: 0.8rem !important;
+    padding: 0.2rem !important;
+  }
+}
+
+@media (max-width: 500px) {
+  #dayBtn span[data-translate="dayBtn"],
+  #weekBtn span[data-translate="weekBtn"] {
+    display: none;
+  }
+  #dayBtn::after {
+    content: "D";
+    padding-right: 4px;
+  }
+  #weekBtn::after {
+    content: "W";
+    padding-right: 4px;
+  }
+  #field {
+    gap: 0.25rem;
   }
 }
