@@ -147,49 +147,51 @@
         <span data-translate="turn">Draaien</span>
       </button>
       <div style="margin-left: auto; display: flex; align-items: center;">
-        <select
-          id="teacherSelect"
-          onchange="teacherSelectChange(this)"
-          style="
-            border: none;
-            background: transparent;
-            color: var(--primary-light);
-            font-family: inherit;
-            font-size: 0.9rem;
-            margin-right: 5px;
-            max-width: 100px;
-          "
-        >
-          <option value="~me">Ik</option>
-          <option value="add">+ Docent</option>
-        </select>
-        <button
-          id="deleteTeacherBtn"
-          onclick="deleteTeacher()"
-          disabled
-          style="
-            border: none;
-            background: transparent;
-            color: var(--primary-light);
-            cursor: default;
-            margin-right: 5px;
-            padding: 0;
-            opacity: 0.5;
-          "
-          title="Docent verwijderen"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="1.25rem"
-            viewBox="0 -960 960 960"
-            width="1.25rem"
-            fill="currentColor"
+        <div id="teacherSelectorContainer" style="display: flex; align-items: center;">
+          <select
+            id="teacherSelect"
+            onchange="teacherSelectChange(this)"
+            style="
+              border: none;
+              background: transparent;
+              color: var(--primary-light);
+              font-family: inherit;
+              font-size: 0.9rem;
+              margin-right: 5px;
+              max-width: 100px;
+            "
           >
-            <path
-              d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
-            />
-          </svg>
-        </button>
+            <option value="~me">Ik</option>
+            <option value="add">+ Docent</option>
+          </select>
+          <button
+            id="deleteTeacherBtn"
+            onclick="deleteTeacher()"
+            disabled
+            style="
+              border: none;
+              background: transparent;
+              color: var(--primary-light);
+              cursor: default;
+              margin-right: 5px;
+              padding: 0;
+              opacity: 0.5;
+            "
+            title="Docent verwijderen"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1.25rem"
+              viewBox="0 -960 960 960"
+              width="1.25rem"
+              fill="currentColor"
+            >
+              <path
+                d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+              />
+            </svg>
+          </button>
+        </div>
         <button
           class="btn"
           id="dayBtn"

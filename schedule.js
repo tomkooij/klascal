@@ -114,6 +114,7 @@ async function userInfo() {
   }
   localStorage.setItem("userType", userType1);
   userType = localStorage.getItem("userType");
+  updateTeacherSelectorVisibility();
   fetchSchedule();
 }
 const inputs = document.querySelectorAll("input");
@@ -940,7 +941,18 @@ async function showLessonInfo(lessonHTML, lesson) {
   }
 }
 
+function updateTeacherSelectorVisibility() {
+    const container = document.getElementById("teacherSelectorContainer");
+    if (!container) return;
+    if (localStorage.getItem("userType") === "student") {
+        container.style.display = "none";
+    } else {
+        container.style.display = "flex";
+    }
+}
+
 function loadTeachers() {
+  updateTeacherSelectorVisibility();
   const select = document.getElementById("teacherSelect");
   if (!select) return;
 
