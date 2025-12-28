@@ -337,6 +337,38 @@ async function fetchSchedule(year, week, isFirstLoad) {
   schedule.innerHTML = "";
   const grouped = {};
 
+  // Calculate Monday of the given ISO week
+  const simple = new Date(year, 0, 1 + (parseInt(week) - 1) * 7);
+  const dow = simple.getDay();
+  const ISOweekStart = simple;
+  if (dow <= 4)
+      ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+  else
+      ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+  
+  // Initialize Mon-Fri
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(ISOweekStart);
+    d.setDate(ISOweekStart.getDate() + i);
+    let dateFull = d.toLocaleDateString([], {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+    // Fallback if split fails or locale differs, but trying to match existing logic
+    const parts = dateFull.split(" ");
+    if (parts.length >= 3) {
+        const [weekday, day, month] = parts;
+        let date = `${weekday.slice(0, 2)}<span class="long">${weekday.slice(
+        2
+        )}</span> ${day}<span class="longExtraExtraExtra"> ${month.slice(
+        0,
+        3
+        )}</span><span class="long">${month.slice(3)}</span>`;
+        grouped[dateFull] = { date, items: [] };
+    }
+  }
+
   appointments.forEach((a) => {
     let dateFull = new Date(a.start * 1000).toLocaleDateString([], {
       weekday: "long",
