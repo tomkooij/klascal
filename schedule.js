@@ -505,7 +505,7 @@ async function fetchSchedule(year, week, isFirstLoad) {
             }
           });
           if (localStorage.getItem("userType") == "teacher") {
-            a.subjects = a.groups;
+            if (a.groups.length > 0) a.subjects = a.groups
           }
           const subjAbbrev = a.subjects;
           if (localStorage.getItem("volVaknaam") === "true") {
