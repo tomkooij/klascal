@@ -497,6 +497,16 @@ async function fetchSchedule(year, week, isFirstLoad) {
             );
             a.groups = a.actions.flatMap((action) => action.appointment.groups);
           }
+          a.groups.forEach((group, index) => {
+            if (group.startsWith(localStorage.getItem("prefix-group"))) {
+              a.groups[index] = group.slice(
+                localStorage.getItem("prefix-group").length
+              ); //groups[index] instead of group is necessary to actually change the value of group
+            }
+          });
+          if (localStorage.getItem("userType") == "teacher") {
+            a.subjects = a.groups;
+          }
           const subjAbbrev = a.subjects;
           if (localStorage.getItem("volVaknaam") === "true") {
             const fullSubjectNames = JSON.parse(
@@ -512,13 +522,6 @@ async function fetchSchedule(year, week, isFirstLoad) {
           if (localStorage.getItem("afkortingHl") === "true") {
             a.teachers = a.teachers.map((teacher) => teacher.toUpperCase());
           }
-          a.groups.forEach((group, index) => {
-            if (group.startsWith(localStorage.getItem("prefix-group"))) {
-              a.groups[index] = group.slice(
-                localStorage.getItem("prefix-group").length
-              ); //groups[index] instead of group is necessary to actually change the value of group
-            }
-          });
           a.locations.forEach((loc, index) => {
             if (loc.startsWith(localStorage.getItem("prefix-location"))) {
               a.locations[index] = loc.slice(
