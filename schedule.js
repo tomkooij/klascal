@@ -189,7 +189,9 @@ function save() {
 }
 function showDialog(el) {
   let dialog = document.getElementById(el) || document.getElementById("dialog");
-  dialog.showModal();
+  if (!dialog.open) {
+    dialog.showModal();
+  }
 }
 function closeDialog(el) {
   let dialog = document.getElementById(el) || document.getElementById("dialog");
@@ -750,6 +752,61 @@ document.getElementById("previousDay").addEventListener("click", () => {
   switchDay("prev");
 });
 window.addEventListener("keydown", (event) => {
+  if (event.target.tagName === "INPUT" || event.target.tagName === "TEXTAREA" || event.target.isContentEditable) return;
+
+  if (event.ctrlKey && event.key === ",") {
+    event.preventDefault();
+    showDialog();
+  }
+
+  if (event.ctrlKey && event.altKey && event.key.toLowerCase() === "d") {
+    event.preventDefault();
+    document.getElementById("dayBtn").click();
+  }
+
+  if (event.ctrlKey && event.altKey && event.key.toLowerCase() === "w") {
+    event.preventDefault();
+    document.getElementById("weekBtn").click();
+  }
+
+  if (event.ctrlKey && event.altKey && event.key.toLowerCase() === "o") {
+    event.preventDefault();
+    document.getElementById("ltr").click();
+  }
+
+  if (event.key === "D") {
+    const newDay = prompt("Dag (1-5):");
+    if (newDay && !isNaN(newDay)) {
+      day = parseInt(newDay) - 1;
+      if (day < 0) day = 0;
+      if (day > 4) day = 4;
+      document.querySelector("body").scrollTo({
+        left: window.innerWidth * day,
+        behavior: "smooth",
+      });
+    }
+  }
+
+  if (event.key === "W") {
+    const newWeek = prompt("Week (1-52):");
+    if (newWeek && !isNaN(newWeek)) {
+      window.week = parseInt(newWeek);
+      fetchSchedule(window.year, window.week);
+    }
+  }
+
+  if (event.key === "J") {
+    const newYear = prompt("Jaar:");
+    if (newYear && !isNaN(newYear)) {
+      window.year = parseInt(newYear);
+      fetchSchedule(window.year, window.week);
+    }
+  }
+
+  if (event.key === "?") {
+    showDialog("shortcuts");
+  }
+
   switch (event.key) {
     case "ArrowLeft":
       switchDay("prev");
