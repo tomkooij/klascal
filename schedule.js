@@ -403,7 +403,8 @@ async function fetchSchedule(year, week, isFirstLoad) {
   const hoursToMinutes = (time) =>
     Number.parseInt(time.split(":")[0]) * 60 +
     Number.parseInt(time.split(":")[1]);
-
+  
+  let scaleFactor = 16;
   for (const [dateFull, { date, items }] of Object.entries(grouped)) {
     const div = document.createElement("div");
     const div2 = document.createElement("div");
@@ -442,7 +443,7 @@ async function fetchSchedule(year, week, isFirstLoad) {
           let startTime = hoursToMinutes(
             localStorage.getItem("startTime") || "08:10"
           );
-          const height = ((endMin - startMin) * 1.1) / 16;
+          const height = ((endMin - startMin) * 1.135) / scaleFactor;
           if (firstLesson) {
             if (!lastLessonEndMin || startMin - lastLessonEndMin < 0) {
               if (startMin < startTime) {
@@ -453,11 +454,11 @@ async function fetchSchedule(year, week, isFirstLoad) {
               );
               lastLessonEndMin = startTime;
             }
-            marginTop = ((startMin - lastLessonEndMin) * 1.1457) / 16;
+            marginTop = ((startMin - lastLessonEndMin) * 1.1457) / scaleFactor;
             if (startTime < 490) {
-              marginTop = ((startMin - lastLessonEndMin) * 1.135) / 16;
+              marginTop = ((startMin - lastLessonEndMin) * 1.135) / scaleFactor;
             } else if (startTime > 490) {
-              marginTop = ((startMin - lastLessonEndMin) * 1.235) / 16;
+              marginTop = ((startMin - lastLessonEndMin) * 1.235) / scaleFactor;
             }
             let lessonPadding = 1;
             if (marginTop == 0) lessonPadding = 0;
@@ -551,15 +552,15 @@ async function fetchSchedule(year, week, isFirstLoad) {
             a
           )})'><strong class="subject">${
             a.subjects
-          }</strong><strong class="subjAbbrev">${subjAbbrev}</strong><strong class="lesuur">${
+          }</strong><strong class="subjAbbrev">${subjAbbrev}</strong><strong class="lesuur"  >${
             a.startTimeSlot
-          }</strong><hr style="height: 0;"><p class="lestijden" style="margin-right: 6px">${start}<span class="longExtraExtra" style="display: inline">-${end}</span></p><p>${
+          }</strong><hr style="height: 0;"><p class="lestijden" style="margin-right: 6px">${start}<span class="longExtraExtra" style="display: inline">-${end}</span></p>${
             a.locations
           }<span class="teachersAndGroups">${
             a.teachers.length != 0 ? ` (${a.teachers})` : ""
           }<span class="groups">${
             localStorage.getItem("klas") == "true" ? ` ${a.groups}` : ""
-          }</span></span></p></span><span class="warning" style="${warningStyles}">${warningSymbol}</span></div>`;
+          }</span></span></span><span class="warning" style="${warningStyles}">${warningSymbol}</span></div>`;
         })
         .join("")}</section>`;
       div.appendChild(div2);
@@ -606,13 +607,14 @@ async function fetchSchedule(year, week, isFirstLoad) {
       behavior: "instant",
     });
   }
-  const startMin = hoursToMinutes(new Date().toLocaleTimeString());
+  //const startMin = hoursToMinutes(new Date().toLocaleTimeString());
+  const startMin = hoursToMinutes("9:10");
   const startTime = hoursToMinutes(
     localStorage.getItem("startTime") || "08:10"
   );
-  let marginTop = ((startMin - startTime) * 1.14) / 16 + 1.5;
+  let marginTop = ((startMin - startTime) * 1.14) / scaleFactor + 1.5;
   if (startTime > 490) {
-    marginTop = ((startMin - startTime) * 1.235) / 16 + 1.5;
+    marginTop = ((startMin - startTime) * 1.235) / scaleFactor + 1.5;
   }
   timeline.style = `--top: ${marginTop}rem`;
   document.getElementById("schedule").appendChild(timeline);
@@ -1042,7 +1044,9 @@ async function showLessonInfo(lessonHTML, lesson) {
 function updateTeacherSelectorVisibility() {
     const container = document.getElementById("teacherSelectorContainer");
     if (!container) return;
-    if (localStorage.getItem("userType") === "student") {
+    const ut = localStorage.getItem("userType");
+    document.body.setAttribute("data-user-type", ut || "student");
+    if (ut === "student") {
         container.style.display = "none";
     } else {
         container.style.display = "flex";
