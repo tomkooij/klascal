@@ -422,7 +422,9 @@ async function fetchSchedule(year, week, isFirstLoad) {
             }
             let lessonPadding = 1;
             if (marginTop == 0) lessonPadding = 0;
-            sectionBeginning = `<section style="--margin: calc(${marginTop}rem + ${lessonPadding}px)">`;
+            sectionBeginning = `<section style="--margin: calc(${marginTop}rem + ${lessonPadding}px); `+
+            `@media (max-width: 850px) {display: inline-block}` + 
+            `">`;
           }
           if (lastLesson) {
             lastLessonEndMin = endMin;
@@ -517,13 +519,13 @@ async function fetchSchedule(year, week, isFirstLoad) {
             a.subjects
           }</strong><strong class="subjAbbrev">${subjAbbrev}</strong><strong class="lesuur">${
             a.startTimeSlot
-          }</strong><hr style="height: 0;"><p class="lestijden" style="margin-right: 6px">${start}<span class="longExtraExtra" style="display: inline">-${end}</span></p><p>${
+          }</strong><hr style="height: 0;"><p class="lestijden" style="margin-right: 6px">${start}<span class="longExtraExtra" style="display: inline">-${end}</span></p>${
             a.locations
           }<span class="teachersAndGroups">${
             a.teachers.length != 0 ? ` (${a.teachers})` : ""
           }<span class="groups">${
             localStorage.getItem("klas") == "true" ? ` ${a.groups}` : ""
-          }</span></span></p></button><span class="warning" style="${warningStyles}">${warningSymbol}</span></div>`;
+          }</span></span></button><span class="warning" style="${warningStyles}">${warningSymbol}</span></div>`;
         })
         .join("")}</section>`;
       div.appendChild(div2);
