@@ -458,9 +458,7 @@ async function fetchSchedule(year, week, isFirstLoad) {
   const hoursToMinutes = (time) =>
     Number.parseInt(time.split(":")[0]) * 60 +
     Number.parseInt(time.split(":")[1]);
-  
-  let scaleFactor = 16;
-  
+    
   let scaleFactor = 16;
   for (const [dateFull, { date, items }] of Object.entries(grouped)) {
     const div = document.createElement("div");
@@ -501,7 +499,6 @@ async function fetchSchedule(year, week, isFirstLoad) {
             localStorage.getItem("startTime") || "08:10"
           );
           const height = ((endMin - startMin) * 1.135) / scaleFactor;
-          const height = ((endMin - startMin) * 1.135) / scaleFactor;
           if (firstLesson) {
             if (!lastLessonEndMin || startMin - lastLessonEndMin < 0) {
               if (startMin < startTime) {
@@ -513,12 +510,9 @@ async function fetchSchedule(year, week, isFirstLoad) {
               lastLessonEndMin = startTime;
             }
             marginTop = ((startMin - lastLessonEndMin) * 1.1457) / scaleFactor;
-            marginTop = ((startMin - lastLessonEndMin) * 1.1457) / scaleFactor;
             if (startTime < 490) {
               marginTop = ((startMin - lastLessonEndMin) * 1.135) / scaleFactor;
-              marginTop = ((startMin - lastLessonEndMin) * 1.135) / scaleFactor;
             } else if (startTime > 490) {
-              marginTop = ((startMin - lastLessonEndMin) * 1.235) / scaleFactor;
               marginTop = ((startMin - lastLessonEndMin) * 1.235) / scaleFactor;
             }
             let lessonPadding = 1;
