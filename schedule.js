@@ -670,8 +670,8 @@ async function fetchSchedule(year, week, isFirstLoad) {
       behavior: "instant",
     });
   }
-  //const startMin = hoursToMinutes(new Date().toLocaleTimeString());
-  const startMin = hoursToMinutes("9:20");
+  const startMin = hoursToMinutes(new Date().toLocaleTimeString());
+  //const startMin = hoursToMinutes("9:20");
   const startTime = hoursToMinutes(
     localStorage.getItem("startTime") || "08:10"
   );
