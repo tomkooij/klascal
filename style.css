@@ -468,6 +468,7 @@ b {
 .btn:hover,
 #previousDay:hover,
 #nextDay:hover,
+#announcementsButton:hover,
 #settingsButton:hover {
   filter: brightness(0.9);
 }
@@ -482,7 +483,11 @@ dialog .btn:active {
 #previousDay,
 #nextDay,
 #loadSchedule,
+#announcementsButton,
 #settingsButton {
+  transition: all 0.1s ease-in-out;
+}
+#announcementsButton {
   transition: all 0.1s ease-in-out;
 }
 
@@ -544,8 +549,10 @@ details[open]::details-content {
   font-variation-settings: initial;
 }
 .innerSpan {
+  all: unset;
   display: block !important;
   width: 100%;
+  min-height: var(--height);
 }
 ol,
 ul {
@@ -603,6 +610,7 @@ small {
   font-variation-settings: "opsz" 20, "ROND" 100;
   color: var(--accent-text-light);
 }
+#announcementsButton,
 #settingsButton {
   background-color: var(--primary-accent);
 }
@@ -687,6 +695,7 @@ input[type="radio"]:not(:checked) ~ label {
 /* Dark Mode Styles */
 @media (prefers-color-scheme: dark) {
   .btn:hover,
+  #announcementsButton:hover,
   #previousDay:hover,
   #nextDay:hover,
   #settingsButton:hover {
@@ -700,6 +709,7 @@ input[type="radio"]:not(:checked) ~ label {
   #nextDay {
     background-color: var(--primary-foreground);
   }
+  #announcementsButton,
   #settingsButton {
     background-color: var(--primary-dark);
   }
@@ -722,7 +732,7 @@ input[type="radio"]:not(:checked) ~ label {
 
   #icon,
   .icon {
-    fill: white;
+    fill: #e1e4db;
     vertical-align: middle;
   }
 }
@@ -957,7 +967,7 @@ dialog.right {
 }
 dialog.right,
 dialog.right #content {
-  width: 303px;
+  width: 311px;
 }
 @media (min-width: 500px) {
   dialog.right {

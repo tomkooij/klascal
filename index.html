@@ -193,6 +193,23 @@
           </button>
         </div>
         <button
+          command="show-modal"
+          commandfor="announcements"
+          id="announcementsButton"
+          title="Instellingen"
+          style="border: none; padding: 0.4rem; border-radius: 2rem"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 -960 960 960"
+            id="icon"
+          >
+            <path
+              d="M200-200q-17 0-28.5-11.5T160-240q0-17 11.5-28.5T200-280h40v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h40q17 0 28.5 11.5T800-240q0 17-11.5 28.5T760-200H200Zm280-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"
+            />
+          </svg>
+        </button>
+        <button
           class="btn"
           id="dayBtn"
           style="
@@ -230,7 +247,8 @@
           ><span data-translate="weekBtn">Week</span>
         </button>
         <button
-          onclick="showDialog()"
+          command="show-modal"
+          commandfor="dialog"
           id="settingsButton"
           title="Instellingen"
           style="border: none; padding: 0.4rem; border-radius: 2rem"
@@ -293,7 +311,12 @@
       <div class="gif-container">
         <div class="gif-mask"></div>
       </div>
-      <dialog id="shortcuts" role="dialog" aria-label="Sneltoetsen">
+      <dialog
+        id="shortcuts"
+        role="dialog"
+        aria-label="Sneltoetsen"
+        closedby="any"
+      >
         <h2>Sneltoetsen</h2>
         <div id="content">
           <section>
@@ -358,16 +381,43 @@
         <button
           class="btn"
           id="closeBtn"
-          onclick="closeDialog('shortcuts')"
-          data-translate="closeBtn"
+          commandfor="shortcuts"
+          command="close"
         >
-          Sluiten
+          <span data-translate="closeBtn">Sluiten</span>
         </button>
       </dialog>
-      <dialog id="info" class="right" role="dialog" aria-label="Lesinformatie">
+
+      <dialog
+        id="announcements"
+        role="dialog"
+        aria-label="Mededelingen"
+        closedby="any"
+      >
+        <h2>Mededelingen</h2>
+        <section id="content">
+          <div id="allAnnouncements"></div>
+        </section>
+        <button
+          class="btn"
+          id="closeBtn"
+          commandfor="announcements"
+          command="close"
+        >
+          <span data-translate="closeBtn">Sluiten</span>
+        </button>
+      </dialog>
+
+      <dialog
+        id="info"
+        class="right"
+        role="dialog"
+        aria-label="Lesinformatie"
+        closedby="any"
+      >
         <h2 data-translate="lessonInformation">Lesinformatie</h2>
         <section id="content"></section>
-        <button class="btn" id="closeBtn" onclick="closeDialog('info')">
+        <button class="btn" id="closeBtn" commandfor="info" command="close">
           <span data-translate="closeBtn">Sluiten</span>
         </button>
       </dialog>
@@ -376,6 +426,7 @@
         role="dialog"
         aria-label="Voer je schoolnaam en koppelcode in."
         tabindex="-1"
+        closedby="any"
       >
         <h2 data-translate="settings">Instellingen</h2>
         <div id="content" class="container">
@@ -1318,6 +1369,21 @@ const newWindow = window.open(targetOrigin);</code>
                 <label for="prefix-location">Voorvoegsel voor lokaal</label>
               </div>
             </section>
+            <strong class="date">Gegevens wissen uit Klascal</strong>
+            <section>
+              <button id="submenu" onclick="clearUserData()">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 -960 960 960"
+                  id="icon"
+                >
+                  <path
+                    d="M280-120q-33 0-56.5-23.5T200-200v-520q-17 0-28.5-11.5T160-760q0-17 11.5-28.5T200-800h160q0-17 11.5-28.5T400-840h160q17 0 28.5 11.5T600-800h160q17 0 28.5 11.5T800-760q0 17-11.5 28.5T760-720v520q0 33-23.5 56.5T680-120H280Zm120-160q17 0 28.5-11.5T440-320v-280q0-17-11.5-28.5T400-640q-17 0-28.5 11.5T360-600v280q0 17 11.5 28.5T400-280Zm160 0q17 0 28.5-11.5T600-320v-280q0-17-11.5-28.5T560-640q-17 0-28.5 11.5T520-600v280q0 17 11.5 28.5T560-280Z"
+                  />
+                </svg>
+                <span>Gegevens wissen</span>
+              </button>
+            </section>
           </div>
           <div id="welcomeScreen" class="submenu">
             <section>
@@ -1390,7 +1456,7 @@ const newWindow = window.open(targetOrigin);</code>
             </section>
           </div>
         </div>
-        <button class="btn" id="closeBtn" onclick="closeDialog()">
+        <button class="btn" id="closeBtn" commandfor="dialog" command="close">
           <span data-translate="closeBtn">Sluiten</span>
         </button>
       </dialog>
@@ -1400,6 +1466,10 @@ const newWindow = window.open(targetOrigin);</code>
     </main>
     <!-- Onderstaand script maakt de html voor het rooster -->
     <script src="schedule.js"></script>
+    <!--Polyfill voor Invoker Commands -->
+    <script type="module">
+      import "https://esm.sh/invokers-polyfill";
+    </script>
     <script>
       if (typeof navigator.serviceWorker !== "undefined") {
         navigator.serviceWorker.register("sw.js");
@@ -1410,7 +1480,7 @@ const newWindow = window.open(targetOrigin);</code>
         const logo = document.getElementById("icon");
         if (!logo) return;
 
-        let overlayType = "christmas";
+        let overlayType = "newyears";
         let clickCount = 0;
         const clickThreshold = 5;
         const overlayDuration = 10000;
