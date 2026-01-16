@@ -1,15 +1,41 @@
 :root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-feature-settings: "liga" 1, "calt" 1, "cv07" 1, "cv03" 1, "cv04" 1;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1,
+    "cv07" 1,
+    "cv03" 1,
+    "cv04" 1;
   interpolate-size: allow-keywords;
   font-variation-settings: "ROND" 100;
 }
 @supports (font-variation-settings: normal) {
   :root {
-    font-family: InterVariable, system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-      "Helvetica Neue", sans-serif;
+    font-family:
+      InterVariable,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      "Open Sans",
+      "Helvetica Neue",
+      sans-serif;
   }
 }
 ::view-transition-group(root) {
@@ -51,13 +77,11 @@
   padding: 0.45rem 0.5rem;
 }
 #soft_burst {
-  transform: translateX(-13px);
   fill: var(--primary-light);
   vertical-align: middle;
-  position: absolute;
 }
 #soft_burst ~ span {
-  margin-left: 4px;
+  margin-left: 2px;
 }
 #field {
   background: var(--primary-background);
@@ -68,6 +92,10 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+#schedule strong.date {
+  text-wrap: nowrap;
+  text-align: center;
 }
 body,
 html {
@@ -118,7 +146,10 @@ section #submenu {
   border-radius: 0.25rem;
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
 }
 .day section div {
   padding: 0px 10px;
@@ -129,14 +160,19 @@ section #submenu {
   background: var(--primary-accent);
   color: var(--accent-text);
   padding: 8px 10px;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px var(--timeline);
   opacity: 0;
   transition: ease-in opacity 0.1s;
   font-size: 0.875rem;
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
   font-weight: 500;
-  font-variation-settings: "opsz" 20, "ROND" 100;
+  font-variation-settings:
+    "opsz" 20,
+    "ROND" 100;
   width: max-content;
   max-width: calc(100% - 40px);
   pointer-events: none;
@@ -169,7 +205,10 @@ section #submenu:last-of-type {
 }
 
 #week {
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
   font-weight: 500;
   line-height: 1;
   display: flex;
@@ -215,6 +254,43 @@ table {
 #shortcuts #content {
   width: 400px;
 }
+#clearSettings {
+  padding: 1.25rem;
+}
+#clearSettings,
+#clearSettings #content {
+  width: 282px;
+}
+#clearSettings div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+#text {
+  font-weight: 500;
+  color: var(--accent-text-light);
+  letter-spacing: 0.1px;
+}
+#clearSettings h2,
+#clearSettings #content {
+  margin: 0;
+  padding: 0;
+}
+#clearSettings #submenu {
+  padding: 1rem;
+  background-color: var(--primary-accent);
+  color: var(--accent-text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#clearSettings #icon {
+  fill: var(--accent-text);
+  width: 2rem;
+  height: 2rem;
+}
 section #submenu {
   padding: 10px 12px;
   font-weight: 500;
@@ -250,12 +326,6 @@ hr {
 strong.lesuur {
   position: absolute;
   right: 13px;
-  translate: 0 -1px;
-}
-@media (max-width: 800px) {
-  body[data-user-type="teacher"] .weekEnabled .lesuur {
-    display: none;
-  }
 }
 h2 {
   font-size: 1.25rem;
@@ -263,7 +333,10 @@ h2 {
   margin-top: 0;
   margin-left: 4px;
   margin-bottom: 12px;
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
 }
 
 .les p,
@@ -274,8 +347,13 @@ strong.date,
   font-weight: 500;
   letter-spacing: 0.00625rem;
   display: inline;
-  font-family: Google Sans Flex, Inter, system-ui;
-  font-variation-settings: "opsz" 20, "ROND" 100;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
+  font-variation-settings:
+    "opsz" 20,
+    "ROND" 100;
 }
 strong.date {
   margin: 8px 12px;
@@ -306,8 +384,7 @@ details strong {
 
 #schedule {
   margin-top: 2.5rem;
-  transition: transform ease-in-out 0.1s;
-  will-change: transform;
+  height: calc(100vh - 2.5rem);
 }
 #schedule div {
   flex: 1;
@@ -327,10 +404,15 @@ details strong {
 #schedule.ltrEnabled {
   flex-direction: column;
   gap: 0;
-  margin-top: 2.5rem;
+  margin-top: 3.75rem;
+  height: calc(100vh - 3.75rem);
 }
 .ltrEnabled strong.date {
   margin: 12px;
+  transform: translateY(-1.5rem);
+}
+.ltrEnabled div {
+  height: 3rem;
 }
 .ltrEnabled .day div {
   display: flex;
@@ -342,13 +424,15 @@ details strong {
   bottom: 22px !important;
 }
 .les {
-  min-height: var(--height);
+  height: calc(var(--height) - 2px);
   transition: filter 0.1s cubic-bezier(1, 0, 0, 1);
   cursor: pointer;
-  position: relative;
+  position: absolute;
   display: flex;
   align-items: center;
   line-height: 1.4;
+  inset: 0;
+  top: var(--margin);
 }
 #schedule .les.clicked {
   filter: brightness(1.15);
@@ -356,6 +440,8 @@ details strong {
 #info .les {
   padding: 0px 10px;
   min-height: var(--height);
+  position: relative;
+  top: 0;
 }
 #info .groups {
   display: none;
@@ -372,7 +458,7 @@ details strong {
   padding: 0;
 }
 #schedule section {
-  margin-top: var(--margin);
+  position: relative;
 }
 section div br:not(:first-of-type) {
   display: none;
@@ -380,17 +466,19 @@ section div br:not(:first-of-type) {
 .ltrEnabled section {
   display: flex;
   margin-top: 0 !important;
-  margin-left: calc(var(--margin) * 2.78);
 }
 .ltrEnabled section div br:not(:first-of-type) {
   display: block;
 }
 .ltrEnabled section div {
-  width: calc(var(--height) * 2.5);
+  width: calc(var(--height) * 3 - 22px);
   margin-bottom: 0;
   margin-right: 0.125rem;
   padding: 6px 10px;
   line-height: normal !important;
+  top: unset;
+  height: 4rem;
+  left: calc(var(--margin) * 3);
 }
 .dayEnabled div {
   width: calc(100vw - 36px);
@@ -421,8 +509,13 @@ section div br:not(:first-of-type) {
 }
 #ltr span {
   vertical-align: text-top;
-  font-family: Google Sans Flex, Inter, system-ui;
-  font-variation-settings: "opsz" 20, "ROND" 100;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
+  font-variation-settings:
+    "opsz" 20,
+    "ROND" 100;
 }
 #ltr svg {
   fill: var(--accent-text);
@@ -453,7 +546,10 @@ section div br:not(:first-of-type) {
 b {
   font-weight: 600;
   letter-spacing: 0.1px;
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
 }
 .btn {
   background-color: #f1f1f1;
@@ -468,8 +564,8 @@ b {
 .btn:hover,
 #previousDay:hover,
 #nextDay:hover,
-#announcementsButton:hover,
-#settingsButton:hover {
+#settingsButton:hover,
+#announcementsButton:hover {
   filter: brightness(0.9);
 }
 dialog .btn {
@@ -483,8 +579,8 @@ dialog .btn:active {
 #previousDay,
 #nextDay,
 #loadSchedule,
-#announcementsButton,
-#settingsButton {
+#settingsButton,
+#announcementsButton {
   transition: all 0.1s ease-in-out;
 }
 #announcementsButton {
@@ -551,8 +647,11 @@ details[open]::details-content {
 .innerSpan {
   all: unset;
   display: block !important;
-  width: 100%;
+  width: calc(100% - 1.2rem);
   min-height: var(--height);
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 ol,
 ul {
@@ -571,7 +670,10 @@ ul {
   width: fit-content;
   color: var(--accent-text);
   font-weight: 450;
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
   letter-spacing: 0.1px;
   flex-wrap: wrap;
   font-size: 14px;
@@ -583,7 +685,10 @@ ul {
   letter-spacing: 0.1px;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
   color: var(--accent-text);
   padding-top: 2px;
 }
@@ -606,12 +711,17 @@ small {
   font-weight: 450;
   letter-spacing: 0.1px;
   opacity: 0.78;
-  font-family: Google Sans Flex, Inter, system-ui;
-  font-variation-settings: "opsz" 20, "ROND" 100;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
+  font-variation-settings:
+    "opsz" 20,
+    "ROND" 100;
   color: var(--accent-text-light);
 }
-#announcementsButton,
-#settingsButton {
+#settingsButton,
+#announcementsButton {
   background-color: var(--primary-accent);
 }
 li {
@@ -629,9 +739,14 @@ li {
 #dayBtn span,
 #weekBtn span,
 #closeBtn span {
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
   line-height: 1;
-  font-variation-settings: "opsz" 20, "ROND" 100;
+  font-variation-settings:
+    "opsz" 20,
+    "ROND" 100;
 }
 #viewSelect {
   display: flex;
@@ -686,7 +801,10 @@ input[type="radio"] ~ label {
   cursor: pointer;
   font-weight: 450;
   letter-spacing: 0.1px;
-  font-family: Google Sans Flex, Inter, system-ui;
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
   transition: opacity 0.15s ease-in-out;
 }
 input[type="radio"]:not(:checked) ~ label {
@@ -698,7 +816,8 @@ input[type="radio"]:not(:checked) ~ label {
   #announcementsButton:hover,
   #previousDay:hover,
   #nextDay:hover,
-  #settingsButton:hover {
+  #settingsButton:hover,
+  #announcementsButton:hover {
     filter: brightness(1.1);
   }
   #dayBtn,
@@ -709,9 +828,13 @@ input[type="radio"]:not(:checked) ~ label {
   #nextDay {
     background-color: var(--primary-foreground);
   }
+  #settingsButton,
   #announcementsButton,
-  #settingsButton {
+  #clearSettings #submenu {
     background-color: var(--primary-dark);
+  }
+  .tooltip {
+    box-shadow: 0 1px 2px var(--primary-background);
   }
   #warningIcon {
     fill: #e89822;
@@ -756,7 +879,7 @@ input[type="radio"]:not(:checked) ~ label {
 }
 .notEnrolled,
 button:disabled {
-  opacity: 0.6;
+  opacity: 0.75;
   color: var(--accent-text);
 }
 .notEnrolled #icon {
@@ -764,23 +887,18 @@ button:disabled {
 }
 .timeline {
   position: absolute;
-  background-color: var(--timeline);
+  background-color: var(--primary-light);
   z-index: -1;
   width: 100%;
 }
 .weekEnabled .timeline {
   height: 2px;
-  top: var(--top);
-}
-.weekEnabled .timeline {
-  height: 2px;
-  top: var(--top);
+  top: calc(var(--top) + 4.5rem);
 }
 .ltrEnabled .timeline {
   width: 2px;
   height: calc(100vh - 3.75rem);
-  left: calc((var(--top) - 1.5rem) * 2.8 + 1px);
-  top: -2.75rem;
+  left: calc(var(--top) * 3 + 0.25rem);
 }
 .dayEnabled .timeline {
   visibility: hidden;
@@ -887,6 +1005,15 @@ label {
   .weekEnabled strong.date {
     display: block;
   }
+  .weekEnabled .les {
+    height: calc(var(--height) * 1.2 - 2px);
+    top: calc(var(--margin) * 1.2);
+  }
+  .weekEnabled .timeline {
+    height: 2px;
+    top: calc(var(--top) * 1.2 + 4.5rem);
+    left: 0;
+  }
   .weekEnabled .warning {
     bottom: 4px;
   }
@@ -915,6 +1042,11 @@ label {
 @media (max-width: 572px) {
   .weekEnabled {
     gap: 2px;
+  }
+}
+@media (max-height: 565px) {
+  #ltr {
+    display: none;
   }
 }
 @media (max-width: 560px) {
@@ -969,6 +1101,41 @@ dialog.right,
 dialog.right #content {
   width: 311px;
 }
+#customAppointments,
+#customAppointments #content {
+  width: 250px;
+}
+#customAppointments .switch {
+  width: 218px;
+}
+#addCustomAppointment {
+  position: fixed;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  z-index: 100;
+  border-radius: 1rem;
+  border: none;
+  background-color: var(--primary-accent);
+  color: var(--accent-text);
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.1px;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-family:
+    Google Sans Flex,
+    Inter,
+    system-ui;
+  font-variation-settings:
+    "opsz" 20,
+    "ROND" 100;
+}
+.addBtn {
+  margin-left: 0.5rem;
+}
 @media (min-width: 500px) {
   dialog.right {
     margin: 0;
@@ -986,6 +1153,11 @@ dialog.right #content {
 }
 @media (max-width: 512px) {
   .weekEnabled .longExtraExtraExtra {
+    display: none !important;
+  }
+}
+@media (max-width: 395px) {
+  #announcementsButton {
     display: none !important;
   }
 }
